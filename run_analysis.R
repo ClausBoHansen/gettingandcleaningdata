@@ -34,8 +34,7 @@ for (dataset in datasets) {
   
   ## Read and add activity IDs
   testids <- read.table(paste(dataset,"/y_", dataset,".txt", sep = ""), col.names = "activityID")
-  ## Merge activity labels
-  testids <- merge(testids, activitylabels, by.x = "activityID", by.y = "activityID")
+  ## Add activity column
   assign(dataname, cbind(testids, get(dataname)))
   
   ## Read and add subject IDs
@@ -45,6 +44,9 @@ for (dataset in datasets) {
   ## Add to all observations variable
   alldata <- rbind(alldata, get(dataname))
 }
+
+## Merge activity labels
+alldata <- merge(alldata, activitylabels, by.x = "activityID", by.y = "activityID")
 
 ## Create data table with only means and averages
 mean_and_std_data <- select(alldata, grep("(^(activity|subjectID)$)|mean|std", names(alldata)))
