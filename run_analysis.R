@@ -10,6 +10,7 @@ localarchive <- "UCI_HAR_Dataset.zip"
 extracteddir <- "UCI HAR Dataset"  # Determined by extracting the archive
 labelfile    <- "features.txt"
 activityfile <- "activity_labels.txt"
+initialdir   <- getwd()
 
 ## Download and extract archive
 download.file(downloadlink, localarchive)
@@ -54,3 +55,6 @@ mean_and_std_data <- group_by(mean_and_std_data, subjectID, activity)
 ## Calculate averages by group
 averages_by_group <- summarize_all(mean_and_std_data, funs(mean))
 
+## Write tidy dataset to file
+setwd(initialdir)
+write.table(averages_by_group, file = "means.txt", row.names = FALSE)
